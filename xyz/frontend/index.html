@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Axios Frontend-Backend Demo</title>
+</head>
+<body>
+
+<h2>Axios Demo App</h2>
+
+<!-- ======================
+     GET DATA SECTION
+     ====================== -->
+<button onclick="getMessage()">Get Message</button>
+<p id="message"></p>
+
+<hr>
+
+<!-- ======================
+     POST DATA SECTION
+     ====================== -->
+<h3>Add User</h3>
+
+<input type="text" id="name" placeholder="Enter Name">
+<input type="number" id="age" placeholder="Enter Age">
+<button onclick="addUser()">Add User</button>
+
+<p id="status"></p>
+
+<hr>
+
+<!-- ======================
+     SHOW USERS
+     ====================== -->
+<h3>Users List</h3>
+<button onclick="getUsers()">Load Users</button>
+<ul id="usersList"></ul>
+
+<!-- Axios CDN -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  /* =====================
+     GET REQUEST
+     ===================== */
+  function getMessage() {
+    axios.get("http://localhost:5000/api/message")
+      .then(res => {
+        document.getElementById("message").innerText =
+          res.data.message + " (" + res.data.time + ")";
+      })
+      .catch(err => console.log(err));
+  }
+
+  /* =====================
+     POST REQUEST
+     ===================== */
+  function addUser() {
+    const name = document.getElementById("name").value;
+    const age = document.getElementById("age").value;
+
+    axios.post("http://localhost:5000/api/add-user", {
+      name,
+      age
+    })
+    .then(res => {
+      document.getElementById("status").innerText =
+        "User added successfully ✅";
+      getUsers(); // refresh list
+    })
+    .catch(err => {
+      document.getElementById("status").innerText =
+        err.response.data.error;
+    });
+  }
+
+  /* =====================
+     GET USERS
+     ===================== */
+  function getUsers() {
+    axios.get("http://localhost:5000/api/users")
+      .then(res => {
+        const list = document.getElementById("usersList");
+        list.innerHTML = "";
+
+        res.data.forEach(user => {
+          const li = document.createElement("li");
+          li.innerText = `${user.name} - ${user.age} years`;
+          list.appendChild(li);
+        });
+      });
+  }
+</script>
+
+</body>
+</html>
