@@ -2,16 +2,35 @@ import express from 'express';
 
 const app = express();
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.send('Hello world!')
+})*/
+
+app.get("/", (req, res) => {
+    res.send("Hello World!");
 })
 
 // get 5 jokes
-app.get('/jokes', (req,res) => {
+app.get('/api/joks', (req, res) => {
     const jokes = [
         {
             id: 1,
-            title: 'joke 1'
+            name: '01'
+        },
+        {
+            id: 2,
+            name: '02'
+        }
+    ]
+    res.send(jokes)
+})
+
+// get 5 jokes
+app.get('/api/jokes', (req,res) => {
+    const jokes = [
+        {
+            id: 1,
+            title: 'joke 1' 
         },
         {
             id: 2,

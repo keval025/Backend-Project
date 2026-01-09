@@ -6,25 +6,36 @@ function App() {
   const [jokes, setJokes] = useState([]);
 
   useEffect(() => {
-    axios.get('https://localhost:5000/jokes')
-    .then((response) => {
-      setJokes(response.data)
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  })
+    axios.get('/api/joks')
+      .then((response) => {
+        setJokes(response.data)
+      })
+      .catch((error) => {
+        console.log(error)  
+      })
+  }, [])
+
+  function Container({user}){
+    return (
+      <>
+      <h1>{user}</h1>
+      </>
+    );
+  }
 
   return (
     <>
       <h1>Hello chai</h1>
-      <p>JOKES: {jokes.legth}</p>
+      <p>JOKES: {jokes.length}</p>
 
       {
-        jokes.map((joke, idx) => {
-          <div key={joke.id}>
-            <h3>{joke.title}</h3>
-          </div>
+        jokes.map((joke) => {
+          return (
+            <div>
+              <Container user={joke.id} />
+              <h2>{joke.name}</h2>
+            </div>
+          )
         })
       }
     </>
